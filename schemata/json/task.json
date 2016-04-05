@@ -1,0 +1,135 @@
+{
+  "$schema": "http://interagent.github.io/interagent-hyper-schema",
+  "type": [
+    "object"
+  ],
+  "definitions": {
+    "task": {
+      "$schema": "http://json-schema.org/draft-04/hyper-schema",
+      "title": "Task",
+      "description": "Task API",
+      "stability": "prototype",
+      "strictProperties": true,
+      "type": [
+        "object"
+      ],
+      "definitions": {
+        "id": {
+          "description": "unique identifier of task",
+          "readOnly": true,
+          "format": "uuid",
+          "type": [
+            "string"
+          ]
+        },
+        "name": {
+          "description": "task name",
+          "type": [
+            "string"
+          ]
+        },
+        "memo": {
+          "description": "task memo",
+          "type": [
+            "string"
+          ]
+        },
+        "done": {
+          "description": "done or not",
+          "type": [
+            "boolean"
+          ]
+        },
+        "identity": [
+          {
+            "$ref": "#/definitions/task/definitions/id"
+          }
+        ],
+        "created_at": {
+          "description": "when task was created",
+          "format": "date-time",
+          "type": [
+            "string"
+          ]
+        },
+        "updated_at": {
+          "description": "when task was updated",
+          "format": "date-time",
+          "type": [
+            "string"
+          ]
+        }
+      },
+      "links": [
+        {
+          "description": "Create a new task.",
+          "href": "/tasks",
+          "method": "POST",
+          "rel": "create",
+          "schema": {
+            "properties": {
+            },
+            "type": [
+              "object"
+            ]
+          },
+          "title": "Create"
+        },
+        {
+          "description": "Delete an existing task.",
+          "href": "/tasks/{(%23%2Fdefinitions%2Ftask%2Fdefinitions%2Fidentity)}",
+          "method": "DELETE",
+          "rel": "destroy",
+          "title": "Delete"
+        },
+        {
+          "description": "Info for existing task.",
+          "href": "/tasks/{(%23%2Fdefinitions%2Ftask%2Fdefinitions%2Fidentity)}",
+          "method": "GET",
+          "rel": "self",
+          "title": "Info"
+        },
+        {
+          "description": "List existing tasks.",
+          "href": "/tasks",
+          "method": "GET",
+          "rel": "instances",
+          "title": "List"
+        },
+        {
+          "description": "Update an existing task.",
+          "href": "/tasks/{(%23%2Fdefinitions%2Ftask%2Fdefinitions%2Fidentity)}",
+          "method": "PATCH",
+          "rel": "update",
+          "schema": {
+            "properties": {
+            },
+            "type": [
+              "object"
+            ]
+          },
+          "title": "Update"
+        }
+      ],
+      "properties": {
+        "created_at": {
+          "$ref": "#/definitions/task/definitions/created_at"
+        },
+        "id": {
+          "$ref": "#/definitions/task/definitions/id"
+        },
+        "name": {
+          "$ref": "#/definitions/task/definitions/name"
+        },
+        "updated_at": {
+          "$ref": "#/definitions/task/definitions/updated_at"
+        }
+      }
+    }
+  },
+  "properties": {
+    "task": {
+      "$ref": "#/definitions/task"
+    }
+  }
+}
