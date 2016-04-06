@@ -8,6 +8,7 @@ gem 'pg'
 gem 'prmd'
 gem 'active_model_serializers', '0.10.0.rc3'
 gem 'seed-fu'
+gem 'ranked-model'
 
 group :development, :test do
   gem 'pry-rails'

@@ -103,6 +103,8 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (11.1.2)
+    ranked-model (0.4.0)
+      activerecord (>= 3.1.12)
     seed-fu (2.3.5)
       activerecord (>= 3.1, < 4.3)
       activesupport (>= 3.1, < 4.3)
@@ -131,6 +133,7 @@ DEPENDENCIES
   pry-rails
   rails (= 4.2.5)
   rails-api
+  ranked-model
   seed-fu
   spring
   sqlite3
