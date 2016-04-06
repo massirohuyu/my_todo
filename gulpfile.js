@@ -47,6 +47,7 @@ var htmlFiles = [
     ],
   jsLibFiles = [
       "node_modules/riot/riot.min.js",
+      "node_modules/reqwest/reqwest.min.js",
       "node_modules/lodash/lodash.min.js"
     ],
   riotTagFiles = [
