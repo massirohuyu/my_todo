@@ -132,10 +132,10 @@ gulp.task('css-minify', function () {
 
 gulp.task('riot', function () {
   gulp.src(riotTagFiles)
+    .pipe(plumber())
     .pipe(slim({
       pretty: true
     }))
-    .pipe(plumber())
     .pipe(riot())
     .pipe(gulp.dest('app/assets/javascripts/tags/'));
 });
@@ -145,6 +145,7 @@ gulp.task('riot', function () {
 
 gulp.task('js-minify', function () {
   gulp.src(jsLibFiles.concat(jsFiles))
+    .pipe(plumber())
     .pipe(sourcemaps.init())
     .pipe(concat('application.js'))
     .pipe(sourcemaps.write())
