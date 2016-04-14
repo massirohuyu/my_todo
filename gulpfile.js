@@ -51,7 +51,7 @@ var htmlFiles = [
       "node_modules/lodash/lodash.min.js"
     ],
   riotTagFiles = [
-        "app/assets/tags/**/*.tag"
+        "app/assets/tags/**/*.tag.slim"
     ];
 
 var sassIncludePaths = [
