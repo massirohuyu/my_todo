@@ -4,7 +4,7 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all
+    @tasks = Task.order(done: :asc, created_at: :desc).all
 
     render json: @tasks
   end
@@ -54,6 +54,6 @@ class TasksController < ApplicationController
     end
 
     def task_params
-      params.require(:task).permit(:name, :memo, :done)
+      params.require(:task).permit(:name, :memo, :done, :task_list_id)
     end
 end

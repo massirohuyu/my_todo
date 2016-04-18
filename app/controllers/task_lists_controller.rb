@@ -4,7 +4,7 @@ class TaskListsController < ApplicationController
   # GET /task_lists
   # GET /task_lists.json
   def index
-    @task_list = TaskList.all
+    @task_list = TaskList.rank(:row_order).all
 
     render json: @task_list
   end
@@ -49,7 +49,7 @@ class TaskListsController < ApplicationController
   private
 
     def set_task_list
-      @task = TaskList.find(params[:id])
+      @task_list = TaskList.find(params[:id])
     end
 
     def task_list_params

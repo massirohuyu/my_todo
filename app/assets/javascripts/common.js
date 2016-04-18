@@ -22,31 +22,72 @@
         return (this.models && this.models.length > 0);
       }
 
-      collection.on('get', function (params) {
+      collection.on('get', function (callback) {
         var co = this;
-        if (!params) params = co.params;
         reqwest({
-          url: this.remote + '?' + params,
+          url: this.remote + '?' + co.params,
           method: 'get',
           success: function (res) {
             var models = res;
             co.models = models;
+            if (typeof callback === 'function') callback(res);
             co.trigger('updated');
+          }
+        });
+      });
+
+      collection.on('get_one', function (id, callback) {
+        var co = this;
+        if (typeof id !== 'number') return;
+        reqwest({
+          url: this.remote + '/' + id,
+          method: 'get',
+          success: function (res) {
+            var model = res,
+                index = _.findIndex(co.models, ['id', id]);
+            co.models[index] = model;
+            if (typeof callback === 'function') callback(model);
+            co.trigger('updated');
+          }
+        });
+      });
+
+      collection.on('post', function (params, callback) {
+        var co = this;
+        if (!params) return;
+        reqwest({
+          url: this.remote,
+          method: 'post',
+          data: params,
+          success: function (res) {
+            if (typeof callback === 'function') callback(res);
+            co.trigger('get');
           }
         });
       });
 
       collection.on('patch', function (id, params) {
         var co = this;
-        if (!id || !params) return;
+        if (typeof id !== 'number' || !params) return;
         reqwest({
-          url: this.remote + '/update/' + id,
-          method: 'post',
+          url: this.remote + '/' + id,
+          method: 'put',
           data: params,
           success: function (res) {
-            var models = res;
-            co.models = models;
-            collection.trigger('get'); //co使わない？
+            co.trigger('get');
+          }
+        });
+      });
+
+      collection.on('delete', function (id, callback) {
+        var co = this;
+        if (typeof id !== 'number') return;
+        reqwest({
+          url: this.remote + '/' + id,
+          method: 'delete',
+          success: function (res) {
+            if (typeof callback === 'function') callback(res);
+            co.trigger('get');
           }
         });
       });
