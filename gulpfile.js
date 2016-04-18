@@ -21,11 +21,11 @@ var htmlFiles = [
         "app/views/**/*.slim"
     ],
 
-  iconFiles = [
-        "app/assets/iconfont/**/*"
+  fontFiles = [
+        "app/assets/fonts/**/*"
     ],
-  iconLibFiles = [
-        "node_modules/material-design-icons/iconfont/*"
+  fontLibFiles = [
+        "node_modules/font-awesome/fonts/*"
     ],
 
   imageFiles = [
@@ -56,7 +56,7 @@ var htmlFiles = [
 
 var sassIncludePaths = [
         "./node_modules/bootstrap-sass/assets/stylesheets",
-        "./lib/material_icons"
+        "./node_modules/font-awesome/scss"
     ].concat(bourbon.includePaths);
 
 
@@ -106,7 +106,8 @@ gulp.task('sass', function () {
         browsers: ['last 2 versions']
       }
     }))
-    .pipe(gulp.dest('app/assets/stylesheets/'));
+    .pipe(concat('application.css'))
+    .pipe(gulp.dest('public/assets/stylesheets/'));
 });
 
 // css minify
@@ -157,14 +158,14 @@ gulp.task('js-minify', function () {
 // other asstes
 //================================================================
 
-// icon copy
+// font copy
 //---------------------------------------
 
-gulp.task('icon-copy', function () {
-  gulp.src(iconFiles)
-    .pipe(gulp.dest('public/assets/iconfont/'));
-  gulp.src(iconLibFiles)
-    .pipe(gulp.dest('public/assets/iconfont/'));
+gulp.task('font-copy', function () {
+  gulp.src(fontFiles)
+    .pipe(gulp.dest('public/assets/fonts/'));
+  gulp.src(fontLibFiles)
+    .pipe(gulp.dest('public/assets/fonts/'));
 });
 
 // images copy
@@ -187,14 +188,14 @@ gulp.task('watch', [
   'slim',
   'html-copy',
   'sass',
-  'css-minify',
+//  'css-minify',
   'riot',
   'js-minify'
 ], function () {
   gulp.watch(slimFiles, ['slim']);
   gulp.watch(htmlFiles, ['html-copy']);
   gulp.watch(scssFiles, ['sass']);
-  gulp.watch(cssFiles, ['css-minify']);
+//  gulp.watch(cssFiles, ['css-minify']);
   gulp.watch(riotTagFiles, ['riot']);
   gulp.watch(jsFiles, ['js-minify']);
 });
@@ -206,10 +207,10 @@ gulp.task('init', [
   'slim',
   'html-copy',
   'sass',
-  'css-minify',
+//  'css-minify',
   'riot',
   'js-minify',
-  'icon-copy',
+  'font-copy',
   'images-copy',
 ]);
 

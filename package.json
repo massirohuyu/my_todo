@@ -27,6 +27,7 @@
     "node-bourbon": "^4.2.8"
   },
   "dependencies": {
+    "font-awesome": "^4.6.1",
     "lodash": "^4.8.2",
     "reqwest": "^2.0.5",
     "riot": "^2.3.18"
