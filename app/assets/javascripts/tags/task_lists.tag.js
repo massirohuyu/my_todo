@@ -1,4 +1,4 @@
-riot.tag2('task_lists', '<h2> task list </h2> <form onsubmit="{add}"> <input name="name" onkeyup="{input}" type="text"><button>add</button> </form> <ul> <li each="{task_list, i in task_lists.models}"> <div if="{!task_list.is_editing}"> <a onclick="{open}">{task_list.name}</a><button onclick="{toggle_editing}" type="button">edit</button> </div> <form if="{task_list.is_editing}" onsubmit="{edit}"> <input name="name" type="text" value="{task_list.name}"><button>ok</button><button onclick="{delete}" type="button">delete</button><button onclick="{toggle_editing}" type="button">cancel</button> </form> </li> </ul> <tasks if="{selected_task_list}" task_list="{selected_task_list}"></tasks>', '', '', function(opts) {
+riot.tag2('task_lists', '<h2 class="taskLists__title"> <i class="fa fa-list"></i> task list </h2> <ul class="taskLists__lists"> <li class="taskLists__list" each="{task_list, i in task_lists.models}"> <div if="{!task_list.is_editing}"> <a class="taskLists__list__name" onclick="{open}">{task_list.name}</a><button class="btn taskLists__list__btn-edit" onclick="{toggle_editing}" type="button"><i class="fa fa-pencil"></i></button> </div> <form class="taskLists__list__edit-form" if="{task_list.is_editing}" onsubmit="{edit}"> <input class="input" name="name" type="text" value="{task_list.name}"> <div class="taskLists__list__edit-form__btns"> <button class="btn"><i class="fa fa-check"></i></button><button class="btn" onclick="{delete}" type="button"><i class="fa fa-trash"></i></button><button class="btn" onclick="{toggle_editing}" type="button"><i class="fa fa-times"></i></button> </div> </form> </li> </ul> <form class="taskLists__list__edit-form" onsubmit="{add}"> <input class="input" name="name" onkeyup="{input}" type="text"> <div class="taskLists__list__edit-form__btns"> <button class="btn"><i class="fa fa-plus"></i></button> </div> </form>', '', 'class="taskLists"', function(opts) {
     var self = this;
 
     self.task_lists = riot.collections.task_lists;
@@ -22,6 +22,7 @@ riot.tag2('task_lists', '<h2> task list </h2> <form onsubmit="{add}"> <input nam
 
     this.open = function(e) {
       self.selected_task_list = e.item.task_list;
+      riot.event.trigger('change_selected_task_list', self.selected_task_list)
       riot.route('open/' + e.item.task_list.id)
     }.bind(this)
 

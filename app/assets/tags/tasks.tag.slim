@@ -1,14 +1,14 @@
 tasks
-  div if="{ opts.task_list }"
+  div if="{ task_list }"
     h3
-      | { opts.task_list.name }
+      | { task_list.name }
     form onsubmit="{ add }"
       input type="text" name="name" onkeyup="{ input }"
       br
       textarea name="memo" onkeyup="{ input }" rows="3"
       button add
     ul
-      li each="{ task, i in opts.task_list.tasks }"
+      li each="{ task, i in task_list.tasks }"
         div if="{ !task.is_editing }"
           label class="{ done: task.done }"
             input type="checkbox" checked="{ task.done }" onclick="{ toggle }"
@@ -23,8 +23,10 @@ tasks
           button type="button" onclick="{ toggle_editing }" cancel
 
   scss:
-    .done {
-      text-decoration: line-through;
+    tasks{
+      .done {
+        text-decoration: line-through;
+      }
     }
   
   javascript:
@@ -40,7 +42,7 @@ tasks
     
     add(e) {
       var params = self.new_task;
-      params.task_list_id = self.opts.task_list.id;
+      params.task_list_id = self.task_list.id;
 
       self.tasks.trigger('post', {task: params}, function(){
         self.trigger('changed');
@@ -87,10 +89,14 @@ tasks
     }
 
     self.on('changed', function(){ //親の力を借りずに更新したい…
-      if(self.opts.task_list) {
-        self.parent.task_lists.trigger('get_one', self.opts.task_list.id, function(task_list){
+      if(self.task_list) {
+        self.parent.task_lists.trigger('get_one', self.task_list.id, function(task_list){
           self.parent.selected_task_list = task_list;
           self.parent.update();
         });
       }
+    });
+    
+    riot.event.on('change_selected_task_list', function(selected_task_list) {
+      self.update({ task_list: selected_task_list });
     });

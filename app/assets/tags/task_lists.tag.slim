@@ -1,21 +1,27 @@
-task_lists
-  h2 task list
-  form onsubmit="{ add }"
-    input type="text" name="name" onkeyup="{ input }"
-    button add
-  ul
-    li each="{ task_list, i in task_lists.models }"
+task_lists.taskLists
+  h2.taskLists__title
+    i.fa.fa-list
+    |  task list
+  ul.taskLists__lists
+    li.taskLists__list each="{ task_list, i in task_lists.models }"
       div if="{ !task_list.is_editing }"
-        a onclick="{ open }" { task_list.name }
-        | 
-        button type="button" onclick="{ toggle_editing }" edit
-      form if="{ task_list.is_editing }" onsubmit="{ edit }"
-        input type="text" name="name" value="{ task_list.name }"
-        button ok
-        button type="button" onclick="{ delete }" delete
-        button type="button" onclick="{ toggle_editing }" cancel
-      
-  tasks if="{ selected_task_list }" task_list="{ selected_task_list }"
+        a.taskLists__list__name onclick="{ open }" { task_list.name }
+        button.btn.taskLists__list__btn-edit type="button" onclick="{ toggle_editing }"
+          i.fa.fa-pencil
+      form.taskLists__list__edit-form if="{ task_list.is_editing }" onsubmit="{ edit }"
+        input.input type="text" name="name" value="{ task_list.name }"
+        .taskLists__list__edit-form__btns
+          button.btn
+            i.fa.fa-check
+          button.btn type="button" onclick="{ delete }"
+            i.fa.fa-trash
+          button.btn type="button" onclick="{ toggle_editing }"
+            i.fa.fa-times
+  form.taskLists__list__edit-form onsubmit="{ add }"
+    input.input type="text" name="name" onkeyup="{ input }"
+    .taskLists__list__edit-form__btns
+      button.btn
+        i.fa.fa-plus
 
   javascript:
     var self = this;
@@ -41,6 +47,7 @@ task_lists
 
     open(e) {
       self.selected_task_list = e.item.task_list;
+      riot.event.trigger('change_selected_task_list', self.selected_task_list)
       riot.route('open/' + e.item.task_list.id)
     }
 
