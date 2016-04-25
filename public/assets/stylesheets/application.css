@@ -2958,7 +2958,8 @@ body {
   height: 100%;
 }
 
-input {
+input,
+textarea {
   font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
   margin: 0;
 }
@@ -3003,6 +3004,10 @@ ul, ol {
   height: 100%;
 }
 
+.fa {
+  font-size: inherit;
+}
+
 /* Default
    ----------------------------------------------------------------- */
 .header {
@@ -3011,6 +3016,10 @@ ul, ol {
   line-height: 50px;
   color: #fff;
   background-color: #618f8e;
+}
+
+.header .header__title {
+  font-size: 1.5em;
 }
 
 .global-nav {
@@ -3025,14 +3034,47 @@ ul, ol {
 }
 
 .content-main {
+  box-sizing: border-box;
   margin-left: 300px;
-  min-height: 100%;
+  height: calc(100% - 50px);
   background-color: #fafafa;
+  padding: 25px;
+}
+
+.u-mgb-10 {
+  margin-bottom: 10px;
+}
+
+/* button */
+.btn {
+  height: 1.7em;
+  min-width: 1.7em;
+  border: none;
+  border-radius: 1.7em;
+  font-size: .9em;
+  padding: 0 .4em;
+  background-color: #e5e5e5;
+  color: #666;
+}
+
+/* input */
+.input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 1.7em;
+  padding: 0 10px;
+  font-size: inherit;
+  border: none;
+  box-shadow: 0 3px 0 0 rgba(0, 0, 0, 0.15) inset;
+  background-color: #fff;
+  color: #555;
 }
 
 /* task_lists */
 .taskLists .taskLists__title {
   padding: 10px;
+  font-size: 1.3em;
 }
 
 .taskLists .taskLists__lists {
@@ -3066,39 +3108,134 @@ ul, ol {
   position: relative;
 }
 
+.taskLists .taskLists__list__edit-form .taskLists__list__edit-form__input {
+  padding-right: 6em;
+}
+
 .taskLists .taskLists__list__edit-form .taskLists__list__edit-form__btns {
   position: absolute;
   top: 50%;
   right: 10px;
-  margin-top: -.6em;
+  margin-top: -.75em;
+}
+
+.taskLists .taskLists__list__edit-form .taskLists__list__edit-form__btns .btn {
+  margin-left: .1em;
+  background-color: #596464;
+  color: #fff;
 }
 
 .taskLists .input {
   height: 2em;
-  color: #eee;
-  background-color: #727b7b;
+  color: #374646;
+  background-color: #ababab;
+  padding-right: 2.5em;
 }
 
-/* button */
-.btn {
-  height: 1.7em;
-  min-width: 1.7em;
-  border: none;
-  border-radius: 1.7em;
-  background-color: #eee;
-  color: #666;
+/* tasks */
+.tasks .tasks__title {
+  padding: 10px;
+  font-size: 1.3em;
 }
 
-/* input */
-.input {
+.tasks .tasks__add-form {
+  margin-bottom: 30px;
+}
+
+.tasks .tasks__add-form .tasks__add-form__btns {
+  margin-top: 5px;
+  text-align: right;
+  font-size: 21.599px;
+  font-size: 1.2rem;
+}
+
+.tasks .tasks__add-form .tasks__add-form__btns .btn {
+  margin-left: .1em;
+}
+
+.tasks .tasks__lists {
+  margin-left: 0;
+  list-style: none;
+}
+
+.tasks .tasks__list {
+  position: relative;
+}
+
+.tasks .tasks__list:first-child .tasks__list__label {
+  border-top: none;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.tasks .tasks__list:last-child .tasks__list__label {
+  border-bottom: 1px solid #ddd;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.tasks .tasks__list__label {
   display: block;
-  box-sizing: border-box;
-  width: 100%;
-  height: 1.7em;
-  padding: 0 10px;
-  font-size: inherit;
-  border: none;
-  box-shadow: 0 3px 0 0 rgba(0, 0, 0, 0.1) inset;
+  padding: 15px;
+  padding-right: 4em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   background-color: #fff;
-  color: #555;
+  border-top: 1px solid #eee;
+}
+
+.tasks .tasks__list__label:hover {
+  background-color: #fffff2;
+}
+
+.tasks .tasks__list__label.done {
+  color: #888;
+  text-decoration: line-through;
+}
+
+.tasks .tasks__list__label.done .tasks__list__checkbox {
+  opacity: .6;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+}
+
+.tasks .tasks__list__label.done .task__list__memo {
+  color: #888;
+}
+
+.tasks .tasks__list__checkbox {
+  width: 1em;
+  height: 1em;
+  zoom: 1.5;
+  margin-right: 5px;
+}
+
+.tasks .task__list__memo {
+  font-size: .85em;
+  color: #707070;
+  margin-left: .5em;
+}
+
+.tasks .tasks__list__btns {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  margin-top: -.75em;
+}
+
+.tasks .tasks__list__btns .btn {
+  margin-left: .1em;
+}
+
+.tasks .tasks__list__edit-form {
+  padding: 15px;
+}
+
+.tasks .tasks__list__edit-form .tasks__list__edit-form__btns {
+  margin-top: 5px;
+  text-align: right;
+}
+
+.tasks .tasks__list__edit-form .tasks__list__edit-form__btns .btn {
+  margin-left: .1em;
 }

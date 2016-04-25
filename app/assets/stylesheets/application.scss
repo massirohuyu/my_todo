@@ -29,14 +29,16 @@
 // Component
 // -----------------------------------------------------------------
 
-//@import "object/component/";
+@import "object/component/button";
+@import "object/component/input";
 
 
 // -----------------------------------------------------------------
 // Project
 // -----------------------------------------------------------------
 
-//@import "object/project/";
+@import "object/project/task_lists";
+@import "object/project/tasks";
 
 // -----------------------------------------------------------------
 // Utility

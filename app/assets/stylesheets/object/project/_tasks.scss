@@ -1,0 +1,105 @@
+/* tasks */
+
+.tasks {
+  .tasks__title {
+    padding: 10px;
+    font-size: 1.3em;
+  }
+  
+  .tasks__add-form {
+    margin-bottom: 30px;
+    
+    .tasks__add-form__btns {
+      margin-top: 5px;
+      text-align: right;
+      font-size: 1.2rem;
+      
+      .btn {
+        margin-left: .1em;
+      }
+    }
+  }
+  
+  .tasks__lists {
+    margin-left: 0;
+    list-style: none;
+  }
+  
+  .tasks__list {
+    position: relative;
+    
+    &:first-child .tasks__list__label {
+      border-top: none;
+      @include border-top-radius(6px);
+    }
+    
+    &:last-child .tasks__list__label {
+      border-bottom: 1px solid #ddd;
+      @include border-bottom-radius(6px);
+    }
+  }
+  
+  .tasks__list__label {
+    display: block;
+    padding: 15px;
+    padding-right: 4em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background-color: #fff;
+    border-top: 1px solid #eee;
+    
+    &:hover {
+      background-color: #fffff2;
+    }
+    
+    &.done {
+      color: #888;
+      text-decoration: line-through;
+      
+      .tasks__list__checkbox {
+        opacity: .6;
+      }
+      .task__list__memo {
+        color: #888;
+      }
+    }
+  }
+  
+  .tasks__list__checkbox {
+    width: 1em;
+    height: 1em;
+    zoom: 1.5;
+    margin-right: 5px;
+  }
+  
+  .task__list__memo {
+    font-size: .85em;
+    color: #707070;
+    margin-left: .5em;
+  }
+  
+  .tasks__list__btns {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    margin-top: -.75em;
+    
+    .btn {
+      margin-left: .1em;
+    }
+  }
+  
+  .tasks__list__edit-form {
+    padding: 15px;
+    
+    .tasks__list__edit-form__btns {
+      margin-top: 5px;
+      text-align: right;
+      
+      .btn {
+        margin-left: .1em;
+      }
+    }
+  }
+}

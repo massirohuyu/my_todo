@@ -16,7 +16,8 @@ body {
   height: 100%;
 }
 
-input {
+input,
+textarea {
   font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
   margin: 0;
 }
@@ -57,4 +58,8 @@ ul, ol {
   background-color: #fff;
   overflow: hidden;
   height: 100%;
+}
+
+.fa {
+  font-size: inherit;
 }

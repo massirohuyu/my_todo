@@ -1,0 +1,63 @@
+/* task_lists */
+
+.taskLists {
+  .taskLists__title {
+    padding: 10px;
+    font-size: 1.3em;
+  }
+  
+  .taskLists__lists {
+    margin: 0;
+  }
+  
+  .taskLists__list {
+    position: relative;
+    border: solid #374646;
+    border-width: 1px 0 0;
+    
+    a.taskLists__list__name {
+      display: block;
+      cursor: pointer;
+      line-height: 2em;
+      background-color: #596464;
+      color: #fff;
+      padding-left: 10px;
+      padding-right: calc(10px + 1.7em);
+    }
+    
+    .taskLists__list__btn-edit {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      margin-top: -.85em;
+    }
+  }
+  
+  .taskLists__list__edit-form {
+    position: relative;
+    
+    .taskLists__list__edit-form__input {
+      padding-right: 6em;
+    }
+    
+    .taskLists__list__edit-form__btns {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      margin-top: -.75em;
+      
+      .btn {
+        margin-left: .1em;
+        background-color: #596464;
+        color: #fff;
+      }
+    }
+  }
+  
+  .input {
+    height: 2em;
+    color: #374646;
+    background-color: #ababab;
+    padding-right: 2.5em;
+  }
+}
