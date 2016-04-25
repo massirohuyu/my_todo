@@ -17,8 +17,10 @@ riot.tag2('tasks', '<div if="{task_list}"> <h3 class="tasks__title"> <i class="f
     }.bind(this)
 
     this.add = function(e) {
-      for(var i = 0; i < e.target.langth; i++) {
-        self.new_task[e.target[i].name] = e.target[i].value;
+      for(var i = 0; i < e.srcElement.length; i++) {
+        if ( e.target[i].name ) {
+          self.new_task[e.target[i].name] = e.target[i].value;
+        }
       }
       var params = self.new_task;
       params.task_list_id = self.task_list.id;
