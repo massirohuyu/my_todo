@@ -5,7 +5,10 @@ task_lists.taskLists
   ul.taskLists__lists
     li.taskLists__list each="{ task_list, i in task_lists.models }"
       div if="{ !task_list.is_editing }"
-        a.taskLists__list__name onclick="{ open }" { task_list.name }
+        a.taskLists__list__name onclick="{ open }"
+          | { task_list.name }
+          span.taskLists__list__length-unfinished
+            | { task_lists.length_unfinished(task_list.id) }
         button.btn.taskLists__list__btn-edit type="button" onclick="{ toggle_editing }"
           i.fa.fa-pencil
       form.taskLists__list__edit-form if="{ task_list.is_editing }" onsubmit="{ edit }"

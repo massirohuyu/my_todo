@@ -3098,6 +3098,13 @@ ul, ol {
   padding-right: calc(10px + 1.7em);
 }
 
+.taskLists .taskLists__list .taskLists__list__length-unfinished {
+  background-color: #4a5555;
+  padding: 1px 6px;
+  border-radius: 5px;
+  margin-left: .5em;
+}
+
 .taskLists .taskLists__list .taskLists__list__btn-edit {
   position: absolute;
   top: 50%;

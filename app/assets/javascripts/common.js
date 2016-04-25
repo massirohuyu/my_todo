@@ -21,6 +21,7 @@
       collection.isReady = function () {
         return (this.models && this.models.length > 0);
       }
+      _.extend(collection, opts.methods);
 
       collection.on('get', function (callback) {
         var co = this;
@@ -105,7 +106,16 @@
       remote: '/tasks'
     }),
     task_lists: riot.createCollection({
-      remote: '/task_lists'
+      remote: '/task_lists',
+      methods: {
+        length_unfinished: function(id){
+          var task_list = _.find(this.models, ['id', id]),
+              unfinisheds = _.filter(task_list.tasks, {
+                'done': false
+              });
+          return unfinisheds.length;
+        }
+      }
     }),
     users: riot.createCollection({
       remote: '/users'
