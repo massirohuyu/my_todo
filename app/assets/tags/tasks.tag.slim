@@ -1,50 +1,81 @@
-tasks
+tasks.tasks
   div if="{ task_list }"
-    h3
-      | { task_list.name }
-    form onsubmit="{ add }"
-      input type="text" name="name" onkeyup="{ input }"
-      br
-      textarea name="memo" onkeyup="{ input }" rows="3"
-      button add
-    ul
-      li each="{ task, i in task_list.tasks }"
-        div if="{ !task.is_editing }"
-          label class="{ done: task.done }"
-            input type="checkbox" checked="{ task.done }" onclick="{ toggle }"
-              | { task.name } （{ task.memo }）
-          button type="button" onclick="{ toggle_editing }" edit
-          button type="button" onclick="{ delete }" delete
-        form if="{ task.is_editing }" onsubmit="{ edit }"
-          input type="text" name="name" value="{ task.name }"
-          textarea name="memo" value="{ task.memo }" rows="3"
-          button ok
-          button type="button" onclick="{ delete }" delete
-          button type="button" onclick="{ toggle_editing }" cancel
+    h3.tasks__title
+      i.fa.fa-list
+      |  { task_list.name }
+    form.tasks__add-form onsubmit="{ add }"
+      input.input type="text" name="name" value="{ new_task.name }"
+      textarea.input name="memo" rows="3" if="{ detail_is_shown }"
+        | { new_task.memo }
+      .tasks__add-form__btns
+        button.btn type="button" onclick="{ toggle_detail_shown }"
+          i.fa.fa-chevron-circle-down if="{ !detail_is_shown }"
+          i.fa.fa-chevron-circle-up if="{ detail_is_shown }"
+          |  Detail
+        button.btn
+          i.fa.fa-plus
+          |  Add
 
-  scss:
-    tasks{
-      .done {
-        text-decoration: line-through;
-      }
-    }
+    button.btn.u-mgb-10 type="button" onclick="{ toggle_done_shown }"
+      i.fa.fa-eye
+      |  Show done
+
+    ul.tasks__lists
+      li.tasks__list each="{ task, i in task_list.tasks }" if="{ !task.done || done_is_shown }"
+        div if="{ !task.is_editing }"
+          label.tasks__list__label class="{ done: task.done }"
+            input.tasks__list__checkbox type="checkbox" checked="{ task.done }" onclick="{ toggle }"
+              | { task.name }
+              span.task__list__memo show="{ task.memo }"
+                | - { task.memo }
+          .tasks__list__btns
+            button.btn type="button" onclick="{ toggle_editing }"
+              i.fa.fa-pencil
+            button.btn type="button" onclick="{ delete }"
+              i.fa.fa-trash
+        form.tasks__list__edit-form if="{ task.is_editing }" onsubmit="{ edit }"
+          input.input type="text" name="name" value="{ task.name }"
+          textarea.input name="memo" value="{ task.memo }" rows="3"
+          .tasks__list__edit-form__btns
+            button.btn
+              i.fa.fa-check
+              |  Edit
+            button.btn type="button" onclick="{ delete }"
+              i.fa.fa-trash
+              |  Delete
+            button.btn type="button" onclick="{ toggle_editing }"
+              i.fa.fa-times
+              |  Close
+      li.tasks__list if="{ false }"
+        .tasks__list__label No tasks.
   
   javascript:
     this.task_list = opts.task_list;
+    this.task_lists = riot.collections.task_lists;
     this.tasks = riot.collections.tasks;
+    this.detail_is_shown = false;
+    this.done_is_shown = false;
     this.new_task = {};
   
     var self = this;
     
-    input(e) {
-      self.new_task[e.target.name] = e.target.value;
+    toggle_detail_shown(e) {
+      this.detail_is_shown = !this.detail_is_shown;
+    }
+    
+    toggle_done_shown(e) {
+      this.done_is_shown = !this.done_is_shown;
     }
     
     add(e) {
+      for(var i = 0; i < e.target.langth; i++) {
+        self.new_task[e.target[i].name] = e.target[i].value;
+      }
       var params = self.new_task;
       params.task_list_id = self.task_list.id;
 
       self.tasks.trigger('post', {task: params}, function(){
+        self.new_task = {};
         self.trigger('changed');
       });
     }
@@ -53,7 +84,9 @@ tasks
       var task = e.item.task
       task.done = !task.done
       
-      self.tasks.trigger('patch', task.id, {task: task});
+      self.tasks.trigger('patch', task.id, {task: task}, function(){
+        self.trigger('changed');
+      });
       return true
     }
 
@@ -88,15 +121,15 @@ tasks
       }
     }
 
-    self.on('changed', function(){ //親の力を借りずに更新したい…
+    self.on('changed', function(){
       if(self.task_list) {
-        self.parent.task_lists.trigger('get_one', self.task_list.id, function(task_list){
-          self.parent.selected_task_list = task_list;
-          self.parent.update();
+        self.task_lists.trigger('get_one', self.task_list.id, function(task_list){
+          self.update({ task_list: task_list });
         });
       }
     });
     
     riot.event.on('change_selected_task_list', function(selected_task_list) {
+      self.new_task = {};
       self.update({ task_list: selected_task_list });
     });

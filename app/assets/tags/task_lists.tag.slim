@@ -1,7 +1,7 @@
 task_lists.taskLists
   h2.taskLists__title
     i.fa.fa-list
-    |  task list
+    |  Task list
   ul.taskLists__lists
     li.taskLists__list each="{ task_list, i in task_lists.models }"
       div if="{ !task_list.is_editing }"

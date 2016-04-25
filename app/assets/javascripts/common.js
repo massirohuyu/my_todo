@@ -66,7 +66,7 @@
         });
       });
 
-      collection.on('patch', function (id, params) {
+      collection.on('patch', function (id, params, callback) {
         var co = this;
         if (typeof id !== 'number' || !params) return;
         reqwest({
@@ -74,6 +74,7 @@
           method: 'put',
           data: params,
           success: function (res) {
+            if (typeof callback === 'function') callback(res);
             co.trigger('get');
           }
         });
