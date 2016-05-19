@@ -12,25 +12,25 @@ GEMFILE="${ROOT_DIR}/Gemfile"
 start()
 {
   echo "start $NAME"
-  su - vagrant -c $cd ${ROOT_DIR} && BUNDLE_GEMFILE=${GEMFILE} bundle exec rake unicorn:start"
+  su - vagrant -c $cd ${ROOT_DIR} && bundle exec rake unicorn:start"
 }
 
 stop()
 {
   echo "stop $NAME"
-  su - vagrant -c "cd ${ROOT_DIR} && BUNDLE_GEMFILE=${GEMFILE} bundle exec rake unicorn:stop"
+  su - vagrant -c "cd ${ROOT_DIR} && bundle exec rake unicorn:stop"
 }
 
 force_stop()
 {
   echo "force stop $NAME"
-  su - vagrant -c "cd ${ROOT_DIR} && BUNDLE_GEMFILE=${GEMFILE} bundle exec rake unicorn:stop_f"
+  su - vagrant -c "cd ${ROOT_DIR} && bundle exec rake unicorn:stop_f"
 }
 
 restart()
 {
   echo "restart $NAME"
-  su - vagrant -c "cd ${ROOT_DIR} && BUNDLE_GEMFILE=${GEMFILE} bundle exec rake unicorn:restart"
+  su - vagrant -c "cd ${ROOT_DIR} && bundle exec rake unicorn:restart"
 }
 
 case "$1" in
