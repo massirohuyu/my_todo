@@ -2,9 +2,10 @@ task_lists.taskLists
   h2.taskLists__title
     i.fa.fa-list
     |  Task list
-  ul.taskLists__lists
-    li.taskLists__list each="{ task_list, i in task_lists.models }"
-      div if="{ !task_list.is_editing }"
+  ul#taskListsLists.taskLists__lists
+    li.taskLists__list each="{ task_list, i in task_lists.models }" ondragover="{ dragover }" ondrop="{ drop }" ondragleave="{ dragleave }" class="{ putting: task_list.putting }" hide="{ task_list.moving }"
+      div if="{ !task_list.is_editing }" draggable="true" ondragstart="{ dragstart }" ondrag="{ drag }" ondragend="{ dragend }"
+        span.taskLists__list__handle
         a.taskLists__list__name onclick="{ open }"
           | { task_list.name }
           span.taskLists__list__length-unfinished
@@ -20,6 +21,9 @@ task_lists.taskLists
             i.fa.fa-trash
           button.btn type="button" onclick="{ toggle_editing }"
             i.fa.fa-times
+  ul#placeholderCase hide="{ true }"
+    li#placeholder.tasklists__list--placeholder show="{ moving }" ondragover="{ dragover_placeholder }"  ondrop="{ drop_placeholder }"
+      | ここに移動
   form.taskLists__list__edit-form onsubmit="{ add }"
     input.input type="text" name="name" onkeyup="{ input }"
     .taskLists__list__edit-form__btns
@@ -31,12 +35,16 @@ task_lists.taskLists
     
     self.task_lists = riot.collections.task_lists;
     self.selected_task_list;
+    self.dragged_task_list;
+    self.moveing_index;
     
     self.task_lists.on('updated', function(){
       self.update();
     });
     
     self.new_task_list = {};
+    self.moving = false;
+    self.move = false;
     
     input(e) {
       self.new_task_list.name = e.target.value;
@@ -84,3 +92,92 @@ task_lists.taskLists
       
       self.task_lists.trigger('patch', task_list.id, {task_list: params});
     }
+    
+    // sortable
+    //============
+    
+    dragstart(e) {
+      var task_list = e.item.task_list;
+      self.dragged_task_list = task_list;
+      e.dataTransfer.effectAllowed = 'move';
+      return true;
+    }
+    
+    drag(e) {
+      e.item.task_list.moving = true;
+      self.moving = true;
+    }
+    
+    dragend(e) {
+      var task_list = e.item.task_list,
+          placeholder = document.getElementById('placeholder'),
+          placeholderCase = document.getElementById('placeholderCase');
+      
+      if( self.move ) {
+        self.move = false;
+        console.log( task_list );
+        if( self.moveing_index > task_list.row_order_position ) {
+          self.moveing_index -= 1;
+        }
+        var params = {
+          row_order_position: self.moveing_index
+        }
+        self.task_lists.trigger('patch', task_list.id, {task_list: params});
+        self.moving = false;
+      } else {
+        e.item.task_list.moving = false;
+      }
+      placeholderCase.appendChild(placeholder);
+      console.log( self.moveing_index );
+      self.moveing_index = null;
+      self.dragged_task_list = null;
+    }
+    
+    dragover(e) {
+      e.dataTransfer.dropEffect = 'move';
+      var task_list = e.item.task_list,
+          target = e.currentTarget,
+          targetHeight = target.offsetHeight,
+          placeholder = document.getElementById('placeholder'),
+          placeholderCase = document.getElementById('placeholderCase');
+          
+      if( e.offsetY < 3 ) {
+        task_list.putting = false;
+        target.parentNode.insertBefore(placeholder, target);
+        self.moveing_index = task_list.row_order_position;
+      } else if( e.offsetY < targetHeight - 3 ) {
+        task_list.putting = true;
+        placeholderCase.appendChild(placeholder);
+      } else {
+        task_list.putting = false;
+        target.parentNode.insertBefore(placeholder, target.nextElementSibling)
+        self.moveing_index = task_list.row_order_position + 1;
+      }
+    }
+    
+    dragleave(e) {
+      var task_list = e.item.task_list;
+      task_list.putting = false;
+    }
+    
+    dragover_placeholder(e) {
+      e.dataTransfer.dropEffect = 'move';
+    }
+    
+    drop(e) {
+      var task_list = e.item.task_list;
+      if( task_list.putting && self.dragged_task_list ) {
+        console.log("drop");
+        console.log( self.dragged_task_list );
+        //TODO: ここでtask_listの下にくっつける
+      } else {
+        self.move = true;
+      }
+      task_list.putting = false;
+    }
+    
+    drop_placeholder(e) {
+      self.move = true;
+    }
+
+

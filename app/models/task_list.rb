@@ -6,5 +6,5 @@ class TaskList < ActiveRecord::Base
   belongs_to :user
   belongs_to :parent, class_name: 'TaskList'
   
-  ranks :row_order
+  ranks :row_order, with_same: [:user_id, :parent_id]
 end

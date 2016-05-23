@@ -5,7 +5,7 @@ tasks.tasks
       |  { task_list.name }
     form.tasks__add-form onsubmit="{ add }"
       input.input type="text" name="name" value="{ new_task.name }"
-      textarea.input name="memo" rows="3" if="{ detail_is_shown }"
+      textarea.input.m-t-10 name="memo" rows="3" if="{ detail_is_shown }"
         | { new_task.memo }
       .tasks__add-form__btns
         button.btn type="button" onclick="{ toggle_detail_shown }"

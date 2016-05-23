@@ -31,6 +31,9 @@
           success: function (res) {
             var models = res;
             co.models = models;
+            _.forEach(co.models, function(model, i) {
+              model['row_order_position'] = i;
+            });
             if (typeof callback === 'function') callback(res);
             co.trigger('updated');
           }
@@ -46,6 +49,7 @@
           success: function (res) {
             var model = res,
                 index = _.findIndex(co.models, ['id', id]);
+            model['row_order_position'] = index;
             co.models[index] = model;
             if (typeof callback === 'function') callback(model);
             co.trigger('updated');

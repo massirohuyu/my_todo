@@ -15,13 +15,33 @@
     border: solid #374646;
     border-width: 1px 0 0;
     
+    &.putting {
+      opacity: .6;
+    }
+    
+    .taskLists__list__handle {
+      $stripe_c: #374646;
+      display: block;
+      position: absolute;
+      top: 2px;
+      bottom: 2px;
+      left: 2px;
+      width: 13px;
+      background-size: 5px 2px;
+      background-repeat: repeat-y;
+      background-position: 3px 0;
+      background-image: linear-gradient($stripe_c 50%, transparent 50%, transparent);
+      cursor: move;
+      z-index: 5;
+    }
+    
     a.taskLists__list__name {
       display: block;
       cursor: pointer;
       line-height: 2em;
       background-color: #596464;
       color: #fff;
-      padding-left: 10px;
+      padding-left: 20px;
       padding-right: calc(10px + 1.7em);
     }
     
@@ -38,6 +58,16 @@
       right: 10px;
       margin-top: -.85em;
     }
+  }
+  
+  .tasklists__list--placeholder {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #374646;
+    color: #eee;
+    font-size: .5em;
+    text-align: center;
   }
   
   .taskLists__list__edit-form {

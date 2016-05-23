@@ -53,7 +53,7 @@ class TaskListsController < ApplicationController
     end
 
     def task_list_params
-      params.require(:task_list).permit(:name, :row_order)
+      params.require(:task_list).permit(:name, :row_order_position)
     end
   
 end
