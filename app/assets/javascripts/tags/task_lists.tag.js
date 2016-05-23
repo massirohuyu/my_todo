@@ -1,28 +1,23 @@
 riot.tag2('task_lists', '<h2 class="taskLists__title"> <i class="fa fa-list"></i> Task list </h2> <ul class="taskLists__lists" id="taskListsLists"> <li class="taskLists__list {putting: task_list.putting}" each="{task_list, i in task_lists.models}" hide="{task_list.moving}" ondragleave="{dragleave}" ondragover="{dragover}" ondrop="{drop}"> <div draggable="true" if="{!task_list.is_editing}" ondrag="{drag}" ondragend="{dragend}" ondragstart="{dragstart}"> <span class="taskLists__list__handle"></span><a class="taskLists__list__name" onclick="{open}">{task_list.name}<span class="taskLists__list__length-unfinished">{task_lists.length_unfinished(task_list.id)}</span></a><button class="btn taskLists__list__btn-edit" onclick="{toggle_editing}" type="button"><i class="fa fa-pencil"></i></button> </div> <form class="taskLists__list__edit-form" if="{task_list.is_editing}" onsubmit="{edit}"> <input class="input" name="name" type="text" value="{task_list.name}"> <div class="taskLists__list__edit-form__btns"> <button class="btn"><i class="fa fa-check"></i></button><button class="btn" onclick="{delete}" type="button"><i class="fa fa-trash"></i></button><button class="btn" onclick="{toggle_editing}" type="button"><i class="fa fa-times"></i></button> </div> </form> </li> </ul> <ul hide="{true}" id="placeholderCase"> <li class="tasklists__list--placeholder" id="placeholder" ondragover="{dragover_placeholder}" ondrop="{drop_placeholder}" show="{moving}"> ここに移動 </li> </ul> <form class="taskLists__list__edit-form" onsubmit="{add}"> <input class="input" name="name" onkeyup="{input}" type="text"> <div class="taskLists__list__edit-form__btns"> <button class="btn"><i class="fa fa-plus"></i></button> </div> </form>', '', 'class="taskLists"', function(opts) {
+
+
     var self = this;
 
-    self.task_lists = riot.collections.task_lists;
-    self.selected_task_list;
-    self.dragged_task_list;
-    self.moveing_index;
+    self.on('mount', function(){
 
-    self.task_lists.on('updated', function(){
-      self.update();
+      self.task_lists = riot.collections.task_lists;
+      self.selected_task_list;
+      self.dragged_task_list;
+      self.moveing_index;
+      self.new_task_list = {};
+      self.moving = false;
+      self.move = false;
+
+      self.task_lists.on('updated', function(){
+        self.update();
+      });
+
     });
-
-    self.new_task_list = {};
-    self.moving = false;
-    self.move = false;
-
-    this.input = function(e) {
-      self.new_task_list.name = e.target.value;
-    }.bind(this)
-
-    this.add = function(e) {
-      var params = self.new_task_list;
-
-      self.task_lists.trigger('post', {task_list: params});
-    }.bind(this)
 
     this.open = function(e) {
       self.selected_task_list = e.item.task_list;
@@ -143,5 +138,15 @@ riot.tag2('task_lists', '<h2 class="taskLists__title"> <i class="fa fa-list"></i
 
     this.drop_placeholder = function(e) {
       self.move = true;
+    }.bind(this)
+
+    this.input = function(e) {
+      self.new_task_list.name = e.target.value;
+    }.bind(this)
+
+    this.add = function(e) {
+      var params = self.new_task_list;
+
+      self.task_lists.trigger('post', {task_list: params});
     }.bind(this)
 });

@@ -3,15 +3,18 @@ tasks.tasks
     h3.tasks__title
       i.fa.fa-list
       |  { task_list.name }
+
     form.tasks__add-form onsubmit="{ add }"
       input.input type="text" name="name" value="{ new_task.name }"
       textarea.input.m-t-10 name="memo" rows="3" if="{ detail_is_shown }"
         | { new_task.memo }
+
       .tasks__add-form__btns
         button.btn type="button" onclick="{ toggle_detail_shown }"
           i.fa.fa-chevron-circle-down if="{ !detail_is_shown }"
           i.fa.fa-chevron-circle-up if="{ detail_is_shown }"
           |  Detail
+
         button.btn
           i.fa.fa-plus
           |  Add
@@ -21,18 +24,21 @@ tasks.tasks
       |  Show done
 
     ul.tasks__lists
-      li.tasks__list each="{ task, i in task_list.tasks }" show="{ !task.done || done_is_shown }"
+      li.tasks__list each="{ task in task_list.tasks }" show="{ !task.done || done_is_shown }"
         div if="{ !task.is_editing }"
           label.tasks__list__label class="{ done: task.done }"
             input.tasks__list__checkbox type="checkbox" checked="{ task.done }" onclick="{ toggle }"
               | { task.name }
               span.task__list__memo show="{ task.memo }"
                 | - { task.memo }
+
           .tasks__list__btns
             button.btn type="button" onclick="{ toggle_editing }"
               i.fa.fa-pencil
+
             button.btn type="button" onclick="{ delete }"
               i.fa.fa-trash
+
         form.tasks__list__edit-form if="{ task.is_editing }" onsubmit="{ edit }"
           input.input type="text" name="name" value="{ task.name }"
           textarea.input name="memo" value="{ task.memo }" rows="3"
@@ -40,31 +46,48 @@ tasks.tasks
             button.btn
               i.fa.fa-check
               |  Edit
+
             button.btn type="button" onclick="{ delete }"
               i.fa.fa-trash
               |  Delete
+
             button.btn type="button" onclick="{ toggle_editing }"
               i.fa.fa-times
               |  Close
+
       li.tasks__list if="{ false }"
         .tasks__list__label No tasks.
-  
-  javascript:
-    this.task_list = opts.task_list;
-    this.task_lists = riot.collections.task_lists;
-    this.tasks = riot.collections.tasks;
-    this.detail_is_shown = false;
-    this.done_is_shown = false;
-    this.new_task = {};
-  
+
+
+
+  javascript: // ------------------------------------------------------------
+
     var self = this;
-    
+
+    // ==============================================================
+    // Initialize when mount
+    // ==============================================================
+
+    self.on('mount', function(){
+
+      self.task_lists = riot.collections.task_lists;  // task_listコレクション
+      self.task_list = opts.task_list;                // 選択中のtask_list
+      self.tasks = riot.collections.tasks;            // taskコレクション
+      self.detail_is_shown = false;                   // 追加フォームを詳細モードにするかどうか
+      self.done_is_shown = false;                     // doneタスクを表示するかどうか
+      self.new_task = {};                             // 追加フォームのデータ
+
+    });
+
+    // ==============================================================
+    // Methods
+    // ==============================================================
+
+    // add-form actions
+    // ------------------------------
+
     toggle_detail_shown(e) {
-      this.detail_is_shown = !this.detail_is_shown;
-    }
-    
-    toggle_done_shown(e) {
-      this.done_is_shown = !this.done_is_shown;
+      self.detail_is_shown = !self.detail_is_shown;
     }
     
     add(e) {
@@ -81,6 +104,16 @@ tasks.tasks
         self.trigger('changed');
       });
     }
+
+    // show-done-button actions
+    // ------------------------------
+
+    toggle_done_shown(e) {
+      self.done_is_shown = !self.done_is_shown;
+    }
+
+    // tasks lists actions
+    // ------------------------------
 
     toggle(e) {
       var task = e.item.task
@@ -122,6 +155,10 @@ tasks.tasks
         });
       }
     }
+
+    // ==============================================================
+    // Events
+    // ==============================================================
 
     self.on('changed', function(){
       if(self.task_list) {

@@ -2,6 +2,7 @@ task_lists.taskLists
   h2.taskLists__title
     i.fa.fa-list
     |  Task list
+
   ul#taskListsLists.taskLists__lists
     li.taskLists__list each="{ task_list, i in task_lists.models }" ondragover="{ dragover }" ondrop="{ drop }" ondragleave="{ dragleave }" class="{ putting: task_list.putting }" hide="{ task_list.moving }"
       div if="{ !task_list.is_editing }" draggable="true" ondragstart="{ dragstart }" ondrag="{ drag }" ondragend="{ dragend }"
@@ -10,51 +11,62 @@ task_lists.taskLists
           | { task_list.name }
           span.taskLists__list__length-unfinished
             | { task_lists.length_unfinished(task_list.id) }
+
         button.btn.taskLists__list__btn-edit type="button" onclick="{ toggle_editing }"
           i.fa.fa-pencil
+
       form.taskLists__list__edit-form if="{ task_list.is_editing }" onsubmit="{ edit }"
         input.input type="text" name="name" value="{ task_list.name }"
         .taskLists__list__edit-form__btns
           button.btn
             i.fa.fa-check
+
           button.btn type="button" onclick="{ delete }"
             i.fa.fa-trash
+
           button.btn type="button" onclick="{ toggle_editing }"
             i.fa.fa-times
+
   ul#placeholderCase hide="{ true }"
     li#placeholder.tasklists__list--placeholder show="{ moving }" ondragover="{ dragover_placeholder }"  ondrop="{ drop_placeholder }"
       | ここに移動
+
   form.taskLists__list__edit-form onsubmit="{ add }"
     input.input type="text" name="name" onkeyup="{ input }"
     .taskLists__list__edit-form__btns
       button.btn
         i.fa.fa-plus
 
-  javascript:
+  javascript: // ------------------------------------------------------------
+
     var self = this;
-    
-    self.task_lists = riot.collections.task_lists;
-    self.selected_task_list;
-    self.dragged_task_list;
-    self.moveing_index;
-    
-    self.task_lists.on('updated', function(){
-      self.update();
+
+    // ==============================================================
+    // Initialize when mount
+    // ==============================================================
+
+    self.on('mount', function(){
+
+      self.task_lists = riot.collections.task_lists;  // task_listコレクション
+      self.selected_task_list;                        // 選択中のtask_list
+      self.dragged_task_list;                         // ドラッグ中のtask_list
+      self.moveing_index;                             // ドラッグ先のtask_list位置
+      self.new_task_list = {};                        // 追加フォームのデータ
+      self.moving = false;                            // ドラッグ中かどうか
+      self.move = false;                              // 移動するかどうか
+
+      self.task_lists.on('updated', function(){
+        self.update();
+      });
+
     });
-    
-    self.new_task_list = {};
-    self.moving = false;
-    self.move = false;
-    
-    input(e) {
-      self.new_task_list.name = e.target.value;
-    }
-    
-    add(e) {
-      var params = self.new_task_list;
-      
-      self.task_lists.trigger('post', {task_list: params});
-    }
+
+    // ==============================================================
+    // Methods
+    // ==============================================================
+
+    // task_lists lists actions
+    // ------------------------------
 
     open(e) {
       self.selected_task_list = e.item.task_list;
@@ -92,27 +104,27 @@ task_lists.taskLists
       
       self.task_lists.trigger('patch', task_list.id, {task_list: params});
     }
-    
-    // sortable
-    //============
-    
+
+    // task_lists lists dnd actions
+    // ------------------------------
+
     dragstart(e) {
       var task_list = e.item.task_list;
       self.dragged_task_list = task_list;
       e.dataTransfer.effectAllowed = 'move';
       return true;
     }
-    
+
     drag(e) {
       e.item.task_list.moving = true;
       self.moving = true;
     }
-    
+
     dragend(e) {
       var task_list = e.item.task_list,
           placeholder = document.getElementById('placeholder'),
           placeholderCase = document.getElementById('placeholderCase');
-      
+
       if( self.move ) {
         self.move = false;
         console.log( task_list );
@@ -132,7 +144,7 @@ task_lists.taskLists
       self.moveing_index = null;
       self.dragged_task_list = null;
     }
-    
+
     dragover(e) {
       e.dataTransfer.dropEffect = 'move';
       var task_list = e.item.task_list,
@@ -140,7 +152,7 @@ task_lists.taskLists
           targetHeight = target.offsetHeight,
           placeholder = document.getElementById('placeholder'),
           placeholderCase = document.getElementById('placeholderCase');
-          
+
       if( e.offsetY < 3 ) {
         task_list.putting = false;
         target.parentNode.insertBefore(placeholder, target);
@@ -154,16 +166,16 @@ task_lists.taskLists
         self.moveing_index = task_list.row_order_position + 1;
       }
     }
-    
+
     dragleave(e) {
       var task_list = e.item.task_list;
       task_list.putting = false;
     }
-    
+
     dragover_placeholder(e) {
       e.dataTransfer.dropEffect = 'move';
     }
-    
+
     drop(e) {
       var task_list = e.item.task_list;
       if( task_list.putting && self.dragged_task_list ) {
@@ -175,9 +187,20 @@ task_lists.taskLists
       }
       task_list.putting = false;
     }
-    
+
     drop_placeholder(e) {
       self.move = true;
     }
 
+    // edit-form actions
+    // ------------------------------
 
+    input(e) {
+      self.new_task_list.name = e.target.value;
+    }
+
+    add(e) {
+      var params = self.new_task_list;
+      
+      self.task_lists.trigger('post', {task_list: params});
+    }
