@@ -11,7 +11,8 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     uglify = require('gulp-uglify'),
     merge = require('merge-stream'),
-    bourbon = require('node-bourbon');
+    bourbon = require('node-bourbon'),
+    webserver = require('gulp-webserver');
 
 var htmlFiles = [
         "app/views/**/*.html"
@@ -176,6 +177,21 @@ gulp.task('images-copy', function () {
     .pipe(gulp.dest('public/assets/images/'));
 });
 
+//================================================================
+// run server
+//================================================================
+
+// server
+//---------------------------------------
+
+gulp.task('server', function() {
+  gulp.src('./public') //サイトのルートディレクトリ
+    .pipe(webserver({
+//      host: "192.168.1.10",
+      livereload: true
+    }));
+});
+
 
 //================================================================
 // init and watch
@@ -218,4 +234,4 @@ gulp.task('init', [
 // default
 //---------------------------------------
 
-gulp.task('default', ['watch']);
+gulp.task('default', ['watch', 'server']);
