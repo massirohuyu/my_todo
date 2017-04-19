@@ -81,6 +81,7 @@ riot.tag2('tasks', '<div if="{task_list}"> <h3 class="tasks__title"> <i class="f
     self.on('changed', function(){
       if(self.task_list) {
         self.task_lists.trigger('get_one', self.task_list.id, function(task_list){
+
           self.update({ task_list: task_list });
         });
       }
