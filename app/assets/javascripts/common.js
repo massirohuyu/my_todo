@@ -204,13 +204,21 @@
           break;
         case 'put':
           var data = _.extend({}, config.data[name], {id: config.id}),
-              req = store.put(data);
-          req.onsuccess = function(){
-            console.log('result', req.result)
-            //config.success(req.result);
+              get_req = store.get(config.id);
+
+          get_req.onsuccess = function(){
+            data = _.extend(get_req.result, data);
+            var req = store.put(data);
+
+            req.onsuccess = function(){
+              config.success(req.result);
+            }
+            req.onerror = function(){
+              console.log("Put Request Failed");
+            }
           }
-          req.onerror = function(){
-            console.log("Patch Request Failed");
+          get_req.onerror = function(){
+            console.log("Get Request for Put Failed");
           }
           break;
         case 'delete':
