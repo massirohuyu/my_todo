@@ -151,7 +151,7 @@
                 child_req.onsuccess = function(){
                   var child_groups = _.groupBy(child_req.result, name+'_id');
                   _.each(req.result, function(result) {
-                    result[child_name] = child_groups[result.id];
+                    result[child_name] = child_groups[result.id] || [];
                   });
                   config.success(req.result);
                 }
