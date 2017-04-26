@@ -26,7 +26,7 @@ tasks.tasks
     ul.tasks__lists
       li.tasks__list each="{ task in task_list.tasks }" show="{ !task.done || done_is_shown }"
         div if="{ !task.is_editing }"
-          label.tasks__list__label class="{ done: task.done }"
+          div.tasks__list__label class="{ done: task.done }"
             input.tasks__list__checkbox type="checkbox" checked="{ task.done }" onclick="{ toggle }"
               | { task.name }
               span.task__list__memo show="{ task.memo }"
