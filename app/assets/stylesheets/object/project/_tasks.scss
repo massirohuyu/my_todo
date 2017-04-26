@@ -50,7 +50,7 @@
     border-top: 1px solid #eee;
     
     &:hover {
-      background-color: #fffff2;
+      background-color: #fbfbe9;
     }
     
     &.done {
@@ -71,6 +71,7 @@
     height: 1em;
     zoom: 1.5;
     margin-right: 5px;
+    cursor: pointer;
   }
   
   .task__list__memo {

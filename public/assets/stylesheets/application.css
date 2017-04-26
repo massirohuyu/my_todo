@@ -2953,7 +2953,7 @@ html {
 }
 
 body {
-  background-color: #eee;
+  background-color: #e5e5e5;
   color: #444;
   height: 100%;
 }
@@ -3038,7 +3038,7 @@ ul, ol {
   margin-left: 300px;
   height: calc(100% - 50px);
   overflow: auto;
-  background-color: #fafafa;
+  background-color: #e5e5e5;
   padding: 25px;
 }
 
@@ -3054,8 +3054,13 @@ ul, ol {
   border-radius: 1.7em;
   font-size: .9em;
   padding: 0 .4em;
-  background-color: #e5e5e5;
+  background-color: #d5d5d5;
   color: #666;
+}
+
+.btn:hover {
+  opacity: .8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 }
 
 /* input */
@@ -3224,7 +3229,7 @@ ul, ol {
 }
 
 .tasks .tasks__list__label:hover {
-  background-color: #fffff2;
+  background-color: #fbfbe9;
 }
 
 .tasks .tasks__list__label.done {
@@ -3246,6 +3251,7 @@ ul, ol {
   height: 1em;
   zoom: 1.5;
   margin-right: 5px;
+  cursor: pointer;
 }
 
 .tasks .task__list__memo {
